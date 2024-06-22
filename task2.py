@@ -1,38 +1,30 @@
-import sys
+import pandas as pd
 
-def main():
-    input = sys.stdin.read().strip().split('\n')
-    index = 0
-    num_entries = int(input[index].strip())
-    index += 1
-    books = []
-    
-    while index < len(input):
-        if input[index].strip() == "* * * * * * * * * * *":
-            break
-        
-        pages = int(input[index].strip())
-        index += 1
-        title = input[index].strip()
-        index += 1
-        author = input[index].strip()
-        index += 1
-        
-        # Skip the line with "pages"
-        index += 1
-        
-        # Store book details
-        books.append((pages, title, author))
-    
-    # Sort books by pages, then by title
-    books.sort(key=lambda book: (book[0], book[1]))
-    
-    # Output the sorted books
-    for book in books:
-        print(book[1])
-        print(book[2])
-        print(f"{book[0]} pages")
-        print()
+# Load the CSV file into a DataFrame
+file_path = '/mnt/data/customers-100.csv'
+df = pd.read_csv(file_path)
 
-if __name__ == "__main__":
-    main()
+# Display the first few rows of the DataFrame
+print("First few rows of the DataFrame:")
+print(df.head())
+
+# Filter the DataFrame to include only customers from Chile
+df_chile = df[df['Country'] == 'Chile']
+
+# Display the filtered DataFrame
+print("\nFiltered DataFrame (only customers from Chile):")
+print(df_chile)
+
+# Handle missing values by filling them with 'Missing'
+df_filled = df.fillna('Missing')
+
+# Display the DataFrame with filled missing values
+print("\nDataFrame with filled missing values:")
+print(df_filled.head())
+
+# Calculate summary statistics
+summary_statistics = df.describe(include='all')
+
+# Display summary statistics
+print("\nSummary statistics:")
+print(summary_statistics)
